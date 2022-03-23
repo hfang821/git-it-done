@@ -1,4 +1,5 @@
 var issueContainerEl = document.querySelector("#issues-container");
+var limitWaningEl = document.querySelector("#limit-warning");
 
 
 var getRepoIssues = function (repo) {
@@ -10,6 +11,11 @@ var getRepoIssues = function (repo) {
             response.json().then(function(data){
                 console.log(data);
                 displayIssues(data);
+
+                //check if api has paginated issues: There will be no "Link" element in the Network Response Headers if less than 30 issues.
+                if (response.headers.get("Link")){
+                    displayWarning(repo);
+                }
             });
         } else {
             alert("There was a problem with your request!");
@@ -55,4 +61,17 @@ var displayIssues = function(issues) {
 
 };
 
-getRepoIssues("facebook/react-devtools");
+var displayWarning = function(repo) {
+    //add text to warning container
+    limitWaningEl.textContent = "To see more than 30 issues, visit ";
+
+    var linkEl = document.createElement("a");
+    linkEl.textContent = "See more issues on Github.com";
+    linkEl.setAttribute("href", "https://github.com/" + repo + "/issues");
+    linkEl.setAttribute("target", "_blank");
+
+    //append to warning container
+    limitWaningEl.appendChild(linkEl);
+};
+
+getRepoIssues("hfang821/git-it-done");
