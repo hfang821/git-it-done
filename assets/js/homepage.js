@@ -89,6 +89,7 @@ var displayRepos = function(repos, searchTerm) {
 }
 
 var getFeaturedRepos = function(language) {
+    //q=SEARCH_KEYWORD_1+SEARCH_KEYWORD_N+QUALIFIER_1+QUALIFIER_N (language is a search keyword and is:featured is a qualifier)
     var apiUrl = "https://api.github.com/search/repositories?q=" + language + "+is:featured&sort=help-wanted-issues";
 
     fetch(apiUrl).then(function(response){
